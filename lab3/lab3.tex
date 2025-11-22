@@ -207,6 +207,95 @@ $$
 Замкнутая система асимптотически устойчива.
 
 
+\subsection{Моделирование замкнутой системы}
+Проведем моделирование замкнутой системы при начальных условиях:
+$$
+x(0)=\begin{bmatrix}
+    1\\0
+\end{bmatrix}
+$$
+
+
+Схема моделирования:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{sch.png}
+    \caption{Схема моделирования замкнутой системы, $u=-Kx$}
+    \label{fig:sch}
+\end{figure}
+
+
+Результаты моделирования:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{1x.png}
+    \caption{Вектор состояния объекта $x(t)$, $u=-Kx$}
+    \label{fig:1x}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{1u.png}
+    \caption{Управление $u=-Kx$}
+    \label{fig:1u}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{1J.png}
+    \caption{Критерий качества $J(t)$, $u=-Kx$}
+    \label{fig:1J}
+\end{figure}
+Установившееся значение критерия качества на
+интервале моделирования составило $J=40.795$.
+
+
+\subsection{Коэффициенты оптимального регулятора с отклонением}
+Отклоним расчетные значения $K$ на $5\%$:
+$$
+K_{b}=1.05K=\begin{bmatrix}
+    -6.6255    &7.9737
+\end{bmatrix}
+$$
+
+
+Спектр замкнутой системы:
+$$
+\sigma\left( A-BK_b \right)=\left\{ -2.1211, -12.6382 \right\}
+$$
+Замкнутая система осталась асимптотически устойчивой.
+
+
+\subsection{Моделирование системы с регулятором с отклонением}
+Проведем аналогичное моделирование:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{2x.png}
+    \caption{Вектор состояния объекта $x(t)$, $u=-K_bx$}
+    \label{fig:2x}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{2u.png}
+    \caption{Управление $u=-K_bx$}
+    \label{fig:2u}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{2J.png}
+    \caption{Критерий качества $J(t)$, $u=-K_bx$}
+    \label{fig:2J}
+\end{figure}
+Установившееся значение критерия качества на
+интервале моделирования составило $J=40.810$.
+
+
+Небольшое отклонение коэффициентов оптимального
+регулятора\\ несколько увеличило установившееся
+значение критерия качества $J$: $40.810>40.795$,
+то есть штрафы за отклонение состояния от нуля $Q$
+и на затраты на управление $r$ увеличились,
+регулятор стал менее эффективным.
+
+
 \section{Вывод}
 ...
 \end{document}
