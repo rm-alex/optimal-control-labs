@@ -296,6 +296,100 @@ $$
 регулятор стал менее эффективным.
 
 
+\subsection{Исследование параметров $\boldsymbol{r},\boldsymbol{Q}$}
+Проведем моделирование для параметров $r\in\left\{ 1,4,10 \right\}$
+и $k\in\left\{ 0.5,1,2 \right\}:Q_i=k_iQ^*$, $Q^*$ -- исходная матрица $Q$.
+
+
+Результаты моделирования:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{3xQ1.png}
+    \caption{Вектор состояния объекта $x(t)$, $Q_{j=1},r_i$}
+    \label{fig:3xQ1}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{3xQ2.png}
+    \caption{Вектор состояния объекта $x(t)$, $Q_{j=2},r_i$}
+    \label{fig:3xQ2}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{3xQ3.png}
+    \caption{Вектор состояния объекта $x(t)$, $Q_{j=3},r_i$}
+    \label{fig:3xQ3}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{3uQ1.png}
+    \caption{Управление $u=-K_{j,i}x$, $Q_{j=1},r_i$}
+    \label{fig:3uQ1}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{3uQ2.png}
+    \caption{Управление $u=-K_{j,i}x$, $Q_{j=2},r_i$}
+    \label{fig:3uQ2}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{3uQ3.png}
+    \caption{Управление $u=-K_{j,i}x$, $Q_{j=3},r_i$}
+    \label{fig:3uQ3}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{3JQ1.png}
+    \caption{Критерий качества $J(t)$, $Q_{j=1},r_i$}
+    \label{fig:3JQ1}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{3JQ2.png}
+    \caption{Критерий качества $J(t)$, $Q_{j=2},r_i$}
+    \label{fig:3JQ2}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{3JQ3.png}
+    \caption{Критерий качества $J(t)$, $Q_{j=3},r_i$}
+    \label{fig:3JQ3}
+\end{figure}
+
+
+Чем меньше штраф на затраты на управление, тем быстрее
+система сходится к нулю, однако управления затрачивается
+больше.
+
+
+Меньше управления затрачивается в обратном случае,
+когда штраф на затраты на управление больше.
+
+
+Чем больше штраф на скорость сходимости, тем быстрее
+система приходит к устоявшемуся состоянию. Однако
+скорость требует б\'{о}льших затрат на управление.
+
+
+Исходя из графиков, минимальный и максимальный устоявшиеся критерии
+$J_{\min}\sim18,J_{\max}\sim84$. Таким образом, оптимальный
+по времени сходимости и затратам на управление устоявшийся критерий должен быть $J_\text{opt}\sim51$.
+Самый близкий из рассматриваемых случаев -- при $k=1 (Q_{j=2}),r=10$ (см. рис. \ref{fig:3JQ2}).
+
+
 \section{Вывод}
-...
+В ходе выполнения лабораторной работы
+был синтезирован оптимальный регулятор.
+Результаты моделирования показали корректность
+проведенных расчетов. Небольшое отклонение
+коэффициентов регулятора приводит к некоторому
+увеличению критерия качества. Исследование
+при различных $Q,r$ позволило выбрать
+наиболее оптимальный регулятор для данной системы
+в рамках исследуемых $k,r$.
 \end{document}
