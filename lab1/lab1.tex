@@ -133,7 +133,7 @@
     \end{enumerate}
     \item Осуществить градиентный поиск минимума критерия качества $J_1(x,u)=J(x,u)$:
     \begin{enumerate}
-        \item Методом Ньютона Рафсона произвести пошаговый расчет экстремума.
+        \item Методом Ньютона-Рафсона произвести пошаговый расчет экстремума.
         \item Методом наискорейшего спуска для двух различных $\gamma$
         (соответствующих колебательной и апериодической сходимостям) произвести
         пошаговый расчет экстремума.
@@ -287,4 +287,369 @@ $$
 
 Таким образом, глобальный минимум достигается на границе $c(x,u)=0$
 в точке $(-0.40167,-0.4701)$, значение критерия $J\approx-9.11394$.
+
+
+\subsection{Градиентный поиск минимума}
+\subsubsection{Метод Ньютона-Рафсона}
+Оптимизация:
+$$
+\bar{x}^{(n+1)}=\bar{x}^{(n)}-H^{-1}(\bar{x}^{(n)})\operatorname{grad} J(\bar{x}^{(n)}),
+$$
+где:
+$$
+\bar{x}^{(n)}=\begin{bmatrix}
+    x(n)\\ u(n)
+\end{bmatrix},\ \operatorname{grad} J(\bar{x}^{(n)})=\begin{bmatrix}
+    \frac{\partial J(\bar{x}^{(n)})}{\partial x}\\ \frac{\partial J(\bar{x}^{(n)} )}{\partial u}
+\end{bmatrix},
+$$
+$$
+H(\bar{x}^{(n)})=\begin{bmatrix}
+    \frac{\partial}{\partial x}\left( \frac{\partial J(\bar{x}^{(n)})}{\partial x} \right) &\frac{\partial}{\partial x}\left( \frac{\partial J(\bar{x}^{(n)})}{\partial u} \right)\\
+    \frac{\partial}{\partial u}\left( \frac{\partial J(\bar{x}^{(n)})}{\partial x} \right) &\frac{\partial}{\partial u}\left( \frac{\partial J(\bar{x}^{(n)})}{\partial u} \right)
+\end{bmatrix}
+$$
+
+
+При нулевой итерации градиент:
+$$
+\nabla J(x,u)=\begin{bmatrix}
+    8x+6u+9\\ 6x+6u+2
+\end{bmatrix}
+$$
+Матрица Гессе и обратная ей:
+$$
+H=\begin{bmatrix}
+    8&6\\ 6 &6
+\end{bmatrix},\ H^{-1}=\begin{bmatrix}
+    0.5 &-0.5\\ -0.5 &2/3
+\end{bmatrix}
+$$
+Пусть начальная точка $(x_0,u_0)=\begin{bmatrix}
+    0&0
+\end{bmatrix}^T$, тогда первая итерация:
+$$
+\bar{x}^{(1)}=\bar{x}^{(0)}-H^{-1}(\bar{x}^{(0)})\operatorname{grad} J(\bar{x}^{(0)})
+$$
+Вычислим:
+$$
+\nabla J(\bar{x}^{(0)})=\nabla J(0,0)=\begin{bmatrix}
+    9\\2
+\end{bmatrix},\ \bar{x}^{(0)}=\begin{bmatrix}
+    0\\0
+\end{bmatrix},
+$$
+$$
+\bar{x}^{(1)}=-\begin{bmatrix}
+    0.5 &-0.5\\ -0.5 &2/3
+\end{bmatrix}\begin{bmatrix}
+    9\\2
+\end{bmatrix}=\begin{bmatrix}
+    -7/2\\ 19/6
+\end{bmatrix}
+$$
+Вторая итерация:
+$$
+\bar{x}^{(2)}=\bar{x}^{(1)}-H^{-1}(\bar{x}^{(1)})\operatorname{grad} J(\bar{x}^{(1)}),
+$$
+$$
+\nabla J(\bar{x}^{(1)})=\nabla J\left( -\frac{7}{2},\frac{19}{6} \right)=\begin{bmatrix}
+    0\\0
+\end{bmatrix}\Rightarrow -H^{-1}(\bar{x}^{(1)})\nabla J(\bar{x}^{(1)})=\begin{bmatrix}
+    0\\0
+\end{bmatrix},
+$$
+Следовательно:
+$$
+\bar{x}^{(2)}=\bar{x}^{(1)}
+$$
+Метод Ньютона-Рафсона сходится за одну итерацию -- точка минимума
+такая же, как в пункте 3.2.1: $\left( -7/2,19/6 \right)$.
+
+
+\subsubsection{Метод наискорейшего спуска}
+Итерационная формула:
+$$
+\bar{x}^{(n+1)}=\bar{x}^{(n)}-\gamma\operatorname{grad} J(\bar{x}^{(n)})
+$$
+
+
+Рассмотрим \textbf{колебательную сходимость} при $\gamma=0.12$. Предоставим вычисление итераций матлабу:
+\begin{align*}
+    &\bar{x}^{(0)}=\begin{bmatrix}
+        0 &0
+    \end{bmatrix}^T,\ \nabla J(\bar{x}^{(0)})=\begin{bmatrix}
+        9&2
+    \end{bmatrix}^T,\\
+    &\bar{x}^{(1)}=\begin{bmatrix}
+        -1.08 &-0.24
+    \end{bmatrix}^T,\ \nabla J(\bar{x}^{(1)})=\begin{bmatrix}
+        -1.08&-5.92
+    \end{bmatrix}^T,\\
+    &\bar{x}^{(2)}=\begin{bmatrix}
+        -0.9504 &0.4704
+    \end{bmatrix}^T,\ \nabla J(\bar{x}^{(2)})=\begin{bmatrix}
+        4.2192&-0.88
+    \end{bmatrix}^T,\\
+    &\bar{x}^{(3)}=\begin{bmatrix}
+        -1.4567 &0.576
+    \end{bmatrix}^T,\ \nabla J(\bar{x}^{(3)})=\begin{bmatrix}
+       0.8024&-3.2842
+    \end{bmatrix}^T,\\
+    &\bar{x}^{(4)}=\begin{bmatrix}
+        -1.553 &0.9701
+    \end{bmatrix}^T,\ \nabla J(\bar{x}^{(4)})=\begin{bmatrix}
+       2.3967&-1.4973
+    \end{bmatrix}^T,\\
+    &\bar{x}^{(5)}=\begin{bmatrix}
+        -1.8406 &1.1498
+    \end{bmatrix}^T,\ \nabla J(\bar{x}^{(5)})=\begin{bmatrix}
+       1.1739&-2.1449
+    \end{bmatrix}^T,\\
+    &\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \vdots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \vdots \\
+    &\bar{x}^{(8)}=\begin{bmatrix}
+        -2.305 &1.7667
+    \end{bmatrix}^T,\ \nabla J(\bar{x}^{(8)})=\begin{bmatrix}
+       1.1606&-1.2295
+    \end{bmatrix}^T,\\
+    &\bar{x}^{(9)}=\begin{bmatrix}
+        -2.4442 &1.9143
+    \end{bmatrix}^T,\ \nabla J(\bar{x}^{(9)})=\begin{bmatrix}
+       0.9316&-1.1799
+    \end{bmatrix}^T,\\
+    &\bar{x}^{(10)}=\begin{bmatrix}
+        -2.556 &2.0558
+    \end{bmatrix}^T,\ \nabla J(\bar{x}^{(10)})=\begin{bmatrix}
+       0.8868&-1.0011
+    \end{bmatrix}^T,\\
+    &\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \vdots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \vdots \\
+    &\bar{x}^{(19)}=\begin{bmatrix}
+        -3.1701 &2.7772
+    \end{bmatrix}^T,\ \nabla J(\bar{x}^{(19)})=\begin{bmatrix}
+       0.3024&-0.3573
+    \end{bmatrix}^T,
+\end{align*}
+\begin{align*}
+    &\bar{x}^{(20)}=\begin{bmatrix}
+        -3.2064 &2.8201
+    \end{bmatrix}^T,\ \nabla J(\bar{x}^{(20)})=\begin{bmatrix}
+       0.2694&-0.3178
+    \end{bmatrix}^T,\\
+    &\bar{x}^{(21)}=\begin{bmatrix}
+        -3.2387 &2.8582
+    \end{bmatrix}^T,\ \nabla J(\bar{x}^{(21)})=\begin{bmatrix}
+       0.2396&-0.2829
+    \end{bmatrix}^T,\\
+    &\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \vdots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \vdots \\
+    &\bar{x}^{(171)}\sim\begin{bmatrix}
+        -3.5 &3.1667
+    \end{bmatrix}^T,\nabla J(\bar{x}^{(171)})\sim\begin{bmatrix}
+       0&0
+    \end{bmatrix}^T,
+\end{align*}
+$$
+J({x}^{(171)})\sim-19.5833
+$$
+
+
+Получили точку, как в пункте 3.2.1: $(-3.5,3.1667)\sim(-7/2,19/6)$.
+
+
+Рассмотрим \textbf{апериодическую сходимость} при $\gamma=0.05$:
+\begin{align*}
+    &\bar{x}^{(0)}=\begin{bmatrix}
+        0 &0
+    \end{bmatrix}^T,\ \nabla J(\bar{x}^{(0)})=\begin{bmatrix}
+        9&2
+    \end{bmatrix}^T,\\
+    &\bar{x}^{(1)}=\begin{bmatrix}
+        -0.45 &-0.1
+    \end{bmatrix}^T,\ \nabla J(\bar{x}^{(1)})=\begin{bmatrix}
+        4.8&-1.3
+    \end{bmatrix}^T,\\
+    &\bar{x}^{(2)}=\begin{bmatrix}
+        -0.69 &-0.035
+    \end{bmatrix}^T,\ \nabla J(\bar{x}^{(2)})=\begin{bmatrix}
+        3.27&-2.35
+    \end{bmatrix}^T,\\
+    &\bar{x}^{(3)}=\begin{bmatrix}
+        -0.8535 &0.0825
+    \end{bmatrix}^T,\ \nabla J(\bar{x}^{(3)})=\begin{bmatrix}
+       2.667&-2.626
+    \end{bmatrix}^T,\\
+    &\bar{x}^{(4)}=\begin{bmatrix}
+        -0.9869 &0.2138
+    \end{bmatrix}^T,\ \nabla J(\bar{x}^{(4)})=\begin{bmatrix}
+       2.388&-2.6383
+    \end{bmatrix}^T,\\
+    &\bar{x}^{(5)}=\begin{bmatrix}
+        -1.1063 &0.3457
+    \end{bmatrix}^T,\ \nabla J(\bar{x}^{(5)})=\begin{bmatrix}
+       2.2243&-2.5632
+    \end{bmatrix}^T,\\
+    &\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \vdots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \vdots \\
+    &\bar{x}^{(8)}=\begin{bmatrix}
+        -1.4227 &0.7147
+    \end{bmatrix}^T,\ \nabla J(\bar{x}^{(8)})=\begin{bmatrix}
+       1.9066&-2.2481
+    \end{bmatrix}^T,\\
+    &\bar{x}^{(9)}=\begin{bmatrix}
+        -1.518 &0.8271
+    \end{bmatrix}^T,\ \nabla J(\bar{x}^{(9)})=\begin{bmatrix}
+       1.8184&-2.1456
+    \end{bmatrix}^T,\\
+    &\bar{x}^{(10)}=\begin{bmatrix}
+        -1.6089 &0.9343
+    \end{bmatrix}^T,\ \nabla J(\bar{x}^{(10)})=\begin{bmatrix}
+       1.7347&-2.0475
+    \end{bmatrix}^T,\\
+    &\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \vdots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \vdots \\
+    &\bar{x}^{(19)}=\begin{bmatrix}
+        -2.2606 &1.7036
+    \end{bmatrix}^T,\ \nabla J(\bar{x}^{(19)})=\begin{bmatrix}
+       1.1368&-1.342
+    \end{bmatrix}^T,\\
+    &\bar{x}^{(20)}=\begin{bmatrix}
+        -2.3174 &1.7707
+    \end{bmatrix}^T,\ \nabla J(\bar{x}^{(20)})=\begin{bmatrix}
+       1.0847&-1.2804
+    \end{bmatrix}^T,\\
+    &\bar{x}^{(21)}=\begin{bmatrix}
+        -2.3717 &1.8347
+    \end{bmatrix}^T,\ \nabla J(\bar{x}^{(21)})=\begin{bmatrix}
+       1.0349&-1.2217
+    \end{bmatrix}^T,\\
+    &\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \vdots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \vdots\\
+    &\bar{x}^{(165)}=\begin{bmatrix}
+        -3.4987 &3.1651
+    \end{bmatrix}^T,\ \nabla J(\bar{x}^{(165)})=\begin{bmatrix}
+       0.0012&-0.0014
+    \end{bmatrix}^T,
+\end{align*}
+\begin{align*}
+    &\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \vdots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \vdots\\
+    &\bar{x}^{(424)}\sim\begin{bmatrix}
+        -3.5 &3.1667
+    \end{bmatrix}^T,\ \nabla J(\bar{x}^{(424)})\sim\begin{bmatrix}
+       0&0
+    \end{bmatrix}^T,
+\end{align*}
+$$
+J({x}^{(424)})\sim-19.5833
+$$
+
+
+Получили точку, как в пункте 3.2.1: $(-3.5,3.1667)\sim(-7/2,19/6)$.
+
+
+\textbf{Замечание}: точность сходимости в обоих случаях составляет $10^{-8}$.
+Параметры сходятся несколько раньше при более низкой точности.
+
+
+\section{Вывод}
+В ходе выполнения данной лабораторной работы
+были исследованы методы  статической оптимизации:
+в случае метода Ньютона-Рафсона сходимости удалось
+достичь за 1 итерацию (квадратичная функция),
+в случае метода наискорейшего спуска при
+колебательной сходимости минимум был достигнут
+за 171 итерацию, при апериодической сходимости
+за 424 итерации. Точность сходимости последних двух
+случаев составляет $10^{-8}$. Также был найден глобальный
+минимум критерия качества без ограничений, на границе
+ограничения и внутри ограничения. В результате получилось,
+что минимум внутри ограничения совпадает с минимумом на
+границе ограничения.
+
+
+\appendix
+\renewcommand{\thesection}{\Asbuk{section}}
+\section{Приложение}
+\begin{lstlisting}[label=code,caption={Программа для расчета итераций}]
+%% Criteria and grad
+J = @(x, u) 4*x.^2 + 3*u.^2 + 6*x.*u + 9*x + 2*u - 7;
+gradJ = @(x, u) [8*x + 6*u + 9; ...
+                 6*x + 6*u + 2];
+
+max_iter = 500;
+tol = 1e-8;
+x0 = 0; u0 = 0;
+
+%% Aperiodic: g = 0.05
+gamma_ap = 0.05;
+
+x_hist_ap = zeros(max_iter+1, 1);
+u_hist_ap = zeros(max_iter+1, 1);
+J_hist_ap = zeros(max_iter+1, 1);
+grad_hist_ap = zeros(2, max_iter+1);
+
+x = x0; u = u0;
+x_hist_ap(1) = x;
+u_hist_ap(1) = u;
+J_hist_ap(1) = J(x, u);
+grad_hist_ap(:, 1) = gradJ(x, u);
+
+n_ap = 1;
+
+for k = 1:max_iter
+    g = grad_hist_ap(:, n_ap);
+    
+    if norm(g) < tol
+        break;
+    end
+    
+    x = x - gamma_ap * g(1);
+    u = u - gamma_ap * g(2);
+    
+    n_ap = n_ap + 1;
+    x_hist_ap(n_ap) = x;
+    u_hist_ap(n_ap) = u;
+    J_hist_ap(n_ap) = J(x, u);
+    grad_hist_ap(:, n_ap) = gradJ(x, u);
+end
+
+x_hist_ap = x_hist_ap(1:n_ap);
+u_hist_ap = u_hist_ap(1:n_ap);
+J_hist_ap = J_hist_ap(1:n_ap);
+grad_hist_ap = grad_hist_ap(:, 1:n_ap);
+
+
+%% Oscillating: g = 0.12
+gamma_os = 0.12;
+
+x_hist_os = zeros(max_iter+1, 1);
+u_hist_os = zeros(max_iter+1, 1);
+J_hist_os = zeros(max_iter+1, 1);
+grad_hist_os = zeros(2, max_iter+1);
+
+x = x0; u = u0;
+x_hist_os(1) = x;
+u_hist_os(1) = u;
+J_hist_os(1) = J(x, u);
+grad_hist_os(:, 1) = gradJ(x, u);
+
+n_os = 1;
+
+for k = 1:max_iter
+    g = grad_hist_os(:, n_os);
+    
+    if norm(g) < tol
+        break;
+    end
+    
+    x = x - gamma_os * g(1);
+    u = u - gamma_os * g(2);
+    
+    n_os = n_os + 1;
+    x_hist_os(n_os) = x;
+    u_hist_os(n_os) = u;
+    J_hist_os(n_os) = J(x, u);
+    grad_hist_os(:, n_os) = gradJ(x, u);
+end
+
+x_hist_os = x_hist_os(1:n_os);
+u_hist_os = u_hist_os(1:n_os);
+J_hist_os = J_hist_os(1:n_os);
+grad_hist_os = grad_hist_os(:, 1:n_os);
+\end{lstlisting}
 \end{document}
