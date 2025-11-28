@@ -191,11 +191,34 @@ $$
 
 
 \subsection{Расчет матрицы коррекции наблюдателя}
-...
+Решим в матлабе уравнение Риккати, получим:
+$$
+P=\begin{bmatrix}
+    2.3813    &0.0739\\
+    0.0739    &0.7678
+\end{bmatrix},\ L=\begin{bmatrix}
+    2.3813\\
+    0.0739
+\end{bmatrix}
+$$
+Собственные числа замкнутой системы:
+$$
+\sigma\left( A-LC \right)=\left\{ -3.1907 \pm 2.7713i\right\}
+$$
+Замкнутая система асимптотически устойчива.
 
 
 \subsection{Моделирование системы}
-...
+Схема моделирования системы:
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[scale=0.6]{sch.png}
+%     \caption{Схема моделирования системы при $L$}
+%     \label{fig:sch}
+% \end{figure}
+
+
+Промоделируем систему при $u=\sin{t},x(0)=\left[ 1,0 \right]^T,\hat{x}(0)=\left[ 0,0 \right]^T$.
 
 
 \subsection{Моделирование системы с отклонениями коэффициентов в матрице коррекции наблюдателя}
@@ -216,4 +239,31 @@ $$
 
 \section{Вывод}
 ...
+
+
+\appendix
+\renewcommand{\thesection}{\Asbuk{section}}
+\section{Приложение}
+\begin{lstlisting}[label=code,caption={Программа для поиска $L$}]
+%% plant parameters
+A=[0 -9;
+   1 -4];
+b=[5;
+    0];
+C=[1 0];
+G=eye(2);
+W=[7 5;
+    5 6];
+Q=[3 0;
+    0 4];
+V=1;
+r=4;
+
+%% Riccati
+GWGT=G*W*G';
+[P,L,e]=icare(A',C',GWGT,V);
+P
+L=P*C'*V^-1
+e=eig(A-L*C)
+\end{lstlisting}
 \end{document}
