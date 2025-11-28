@@ -209,42 +209,254 @@ $$
 
 
 \subsection{Моделирование системы}
-Схема моделирования системы:
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[scale=0.6]{sch.png}
-%     \caption{Схема моделирования системы при $L$}
-%     \label{fig:sch}
-% \end{figure}
+Схема моделирования системы представлена на рис. (\ref{fig:sch}).
 
 
-Промоделируем систему при $u=\sin{t},x(0)=\left[ 1,0 \right]^T,\hat{x}(0)=\left[ 0,0 \right]^T$.
+Начальные условия:
+\begin{lstlisting}[label=init, caption={Начальные условия схемы моделирования}]
+set_param('sim1/A', 'Gain', mat2str(A));
+set_param('sim1/A1', 'Gain', mat2str(A));
+set_param('sim1/b', 'Gain', mat2str(b));
+set_param('sim1/b1', 'Gain', mat2str(b));
+set_param('sim1/C', 'Gain', mat2str(C));
+set_param('sim1/C1', 'Gain', mat2str(C));
+set_param('sim1/L', 'Gain', mat2str(L));
+set_param('sim1/G', 'Gain', mat2str(G));
+set_param('sim1/W', 'Gain', mat2str(W));
+\end{lstlisting}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{sch.png}
+    \caption{Схема моделирования системы}
+    \label{fig:sch}
+\end{figure}
+
+
+Промоделируем систему при $u=\sin{t},x(0)=\left[ 1,0 \right]^T,\hat{x}(0)=\left[ 0,0 \right]^T$:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.9]{1elx.png}
+    \caption{Ошибка наблюдения $e_L=x-\hat{x}$ при $L$}
+    \label{fig:1elx}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.9]{1J.png}
+    \caption{Критерий качества при $L$}
+    \label{fig:1J}
+\end{figure}
+
+
+Среднее значение критерия качества $M[J]=23.3316$.
 
 
 \subsection{Моделирование системы с отклонениями коэффициентов в матрице коррекции наблюдателя}
-...
+Отклоним коэффициенты матрицы коррекции наблюдателя:
+$$
+L_b=1.2L=\begin{bmatrix}
+    3.4577\\
+    0.1072
+\end{bmatrix}
+$$
+Спектр замкнутой системы:
+$$
+\sigma\left( A-L_bC \right)=\left\{ -3.7288 \pm 2.8216i\right\}
+$$
+Замкнутая система осталась асимптотически устойчивой.
+
+
+Проведем аналогичное моделирование при $L_b$:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.9]{2elx.png}
+    \caption{Ошибка наблюдения $e_L=x-\hat{x}$ при $L_b=1.2L$}
+    \label{fig:2elx}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.9]{2J.png}
+    \caption{Критерий качества при $L_b=1.2L$}
+    \label{fig:2J}
+\end{figure}
+
+
+Среднее значение критерия качества $M[J]=20.2593$.
+По сравнению с эталоном значение уменьшилось на $\approx13.17\%$.
+
+
+Проверим $L_b=0.8L=\left[ 1.905,0.0591 \right]^T$:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.9]{3elx.png}
+    \caption{Ошибка наблюдения $e_L=x-\hat{x}$ при $L_b=0.8L$}
+    \label{fig:3elx}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.9]{3J.png}
+    \caption{Критерий качества при $L_b=0.8L$}
+    \label{fig:3J}
+\end{figure}
+
+
+Среднее значение критерия качества $M[J]=25.4642$ увеличилось.
 
 
 \subsection{Моделирование системы с отклонениями значений в матрице энергии W}
-...
+Отклоним значения в матрице $W$:
+$$
+W_b=0.5W=\begin{bmatrix}
+    3.5	&2.5\\
+    2.5	&3
+\end{bmatrix}\Rightarrow L=\begin{bmatrix}
+    1.4575\\
+0.0764
+\end{bmatrix}
+$$
+Собственные числа $W_b:\left\{ 0.3688, 2.8812 \right\}$.
 
 
-\subsection{Моделирование системы с отклонением значения энергии V}
-...
+Матрица $W_b$ симметрична и ее спектр не содержит неположительных чисел,
+следовательно матрица $W_b$ положительно определена.
+
+
+Проведем аналогичное моделирование системы:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.9]{4elx.png}
+    \caption{Ошибка наблюдения $e_L=x-\hat{x}$ при $W_b=0.5W$}
+    \label{fig:4elx}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.9]{4J.png}
+    \caption{Критерий качества при $W_b=0.5W$}
+    \label{fig:4J}
+\end{figure}
+
+
+Среднее значение $M[J]=7.4669$ значительно уменьшилось,
+ошибка наблюдения уменьшилась.
+
+
+\subsection{Моделирование системы с отклонением значения в матрице энергии V}
+Отклоним значение матрицы $V$:
+$$
+V_b=0.5V=0.5>0\Rightarrow L=\begin{bmatrix}
+    3.6943\\
+0.0196
+\end{bmatrix}
+$$
+
+
+Проведем аналогичное моделирование системы при $V_b,W$:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.9]{5elx.png}
+    \caption{Ошибка наблюдения $e_L=x-\hat{x}$ при $V_b=0.5V,W$}
+    \label{fig:5elx}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.9]{5J.png}
+    \caption{Критерий качества при $V_b=0.5V,W$}
+    \label{fig:5J}
+\end{figure}
+
+
+Критерий качества в среднем $M[J]=18.6695$ и ошибка
+уменьшились менее значимо, чем в случае с $W_b=0.5W$.
+
+
+Промоделируем систему при $V_b=0.5V,W_b=0.5W,L=\left[ 2.3813,0.0739 \right]^T$:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.9]{6elx.png}
+    \caption{Ошибка наблюдения $e_L=x-\hat{x}$ при $V_b=0.5V,W_b=0.5W$}
+    \label{fig:6elx}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.9]{6J.png}
+    \caption{Критерий качества при $V_b=0.5V,W_b=0.5W$}
+    \label{fig:6J}
+\end{figure}
+
+
+Среднее значения критерия качества $M[J]=6.0945$
+получилось наименьшим из всех по сравнению с предыдущими пунктами
+-- мы уменьшили влияния обеих помех. С ошибкой наблюдения аналогично.
 
 
 \subsection{Моделирование системы с ЛКГ регулятором и фильтром Калмана}
-...
+Система замкнута регулятором $u=-K\hat{x}$. Оценка вектора состояния
+формируется на базе фильтра Калмана. Для расчета $K$ используем LQR:
+$$
+P=\begin{bmatrix}
+0.56854&-0.4901\\-0.4901&1.415
+\end{bmatrix} ,\ K=\begin{bmatrix}
+    0.7106   &-0.6126
+\end{bmatrix}
+$$
+Спектр замкнутой системы:
+$$
+\sigma\left( A-BK \right)=\left\{ -3.7765 \pm 2.4264i \right\}
+$$
+Замкнутая система асимптотически устойчива.
+
+
+Схема моделирования системы:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{sch2.png}
+    \caption{Схема моделирования системы с ЛКГ и фильтром Калмана}
+    \label{fig:sch2}
+\end{figure}
+
+
+Проведем аналогичное моделирование:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.9]{7elx.png}
+    \caption{Ошибка наблюдения $e_L=x-\hat{x}$ при $u=-K\hat{x}$}
+    \label{fig:7elx}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.9]{7J.png}
+    \caption{Критерий качества при $u=-K\hat{x}$}
+    \label{fig:7J}
+\end{figure}
+
+
+Среднее значение критерия качества такое же, как в пункте 3.3: $M[J]=23.3316$.
+Это потому, что динамика ошибки оценивания определяется только
+параметрами наблюдателя (матрица коррекции $L$ -- замкнутая система $A-LC$) и характеристиками помех $W,V$.
+Изменив управление, но не поменяв $W,V$, результат остался такой же. Управление
+$u$ сокращается в уравнениях ошибки.
 
 
 \section{Вывод}
-...
+В ходе выполнения лабораторной работы
+был синтезирован наблюдатель (фильтр Калмана).
+Было проведено моделирование системы с полученным наблюдателем.
+Результаты показали, что наблюдатель синтезирован корректно
+-- он обеспечивает минимальную ошибку при заданных
+интенсивностях помех. При отклонении коэффициентов
+матрицы коррекции наблюдателя на $+20\%$ наблюдатель
+стал работать эффективнее -- значения собственных чисел
+замкнутой системы уменьшились. При отклонении на $-20\%$
+наблюдатель стал работать хуже. При уменьшении влияния
+помех наблюдатель работает эффективнее. Управление
+не влияет на эффективность наблюдения.
 
 
 \appendix
 \renewcommand{\thesection}{\Asbuk{section}}
 \section{Приложение}
-\begin{lstlisting}[label=code,caption={Программа для поиска $L$}]
+\begin{lstlisting}[label=code,caption={Программа для поиска $L,K$}]
 %% plant parameters
 A=[0 -9;
    1 -4];
@@ -259,11 +471,18 @@ Q=[3 0;
 V=1;
 r=4;
 
-%% Riccati
+%% Riccati L
 GWGT=G*W*G';
 [P,L,e]=icare(A',C',GWGT,V);
 P
 L=P*C'*V^-1
 e=eig(A-L*C)
+
+%% Riccati K
+v=1;
+[PK,K,e]=icare(A,sqrt(v)*b,Q,r);
+PK
+K=inv(r)*b'*PK
+eK=eig(A-b*K)
 \end{lstlisting}
 \end{document}
