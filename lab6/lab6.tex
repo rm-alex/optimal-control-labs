@@ -172,6 +172,85 @@ Q=\begin{bmatrix}
 $$
 
 
+\subsection{Расчет оптимального регулятора}
+Выберем $\gamma=10$ и проведем расчет $K$:
+$$
+K=\begin{bmatrix}
+    -1.6711&  -15.2927
+\end{bmatrix}
+$$
+Собственные числа замкнутой системы:
+$$
+\sigma\left( A+BK \right)=\left\{ -11.7411,-14.1997 \right\}
+$$
+Замкнутая система асимптотически устойчива.
+
+
+\subsection{Минимальное значение коэффициента}
+Экспериментально подобран минимальный коэффициент
+$\gamma_{\min}=5.6061$, при котором существует положительно полуопределённая матрица
+$P$ как решение уравнения Риккати:
+$$
+P=\begin{bmatrix}
+    2530&   -28630\\
+   -28630&    323900
+\end{bmatrix},\ \sigma(P)=\left\{ 0,326430 \right\}
+$$
+$$
+K=\begin{bmatrix}
+    44600   -504670
+\end{bmatrix},\ \sigma\left( A+BK \right)=\left\{ -10,-786330 \right\}
+$$
+
+
+\subsection{Моделирование системы}
+Схема моделирования:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{sch.png}
+    \caption{Схема моделирования замкнутой системы}
+    \label{fig:sch}
+\end{figure}
+
+
+Результаты моделирования:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{uu.png}
+    \caption{Управление $u(t)$ для $\gamma_{\min}$ полностью}
+    \label{fig:uu}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{uuu.png}
+    \caption{Управление $u(t)$ для $\gamma_{\min}$ вблизи (1)}
+    \label{fig:uuu}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{u.png}
+    \caption{Управление $u(t)$ для $\gamma_{\min}$ вблизи (2)}
+    \label{fig:u}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{x.png}
+    \caption{Состояния системы $x(t)$ для $\gamma_{\min}$}
+    \label{fig:x}
+\end{figure}
+
+
+На графике управления заметно значительное перерегулироване в начале.
+
+
+\subsection{Вычисление $\boldsymbol{H_{\infty}}$-нормы для передаточных функций $\boldsymbol{W_1,W_2}$}
+...
+
+
+\subsection{Вычисление $\boldsymbol{H_{\infty}}$-нормы для передаточной функции $\boldsymbol{W}$}
+...
+
+
 \section{Вывод}
 ...
 \end{document}
