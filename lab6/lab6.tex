@@ -244,13 +244,68 @@ $$
 
 
 \subsection{Вычисление $\boldsymbol{H_{\infty}}$-нормы для передаточных функций $\boldsymbol{W_1,W_2}$}
-...
+Определим $H_\infty$-нормы передаточных функций $W_1,W_2,C_1=\left[ 1,0 \right],C_2=[0,1]$:
+$$
+W_1=C_1\left( Is-\left( A+BK \right) \right)^{-1}B_f,\ ||W_1||_\infty=2.7162,\\
+$$
+$$
+W_2=C_2\left( Is-\left( A+BK \right) \right)^{-1}B_f,\ ||W_2||_\infty=0.24
+$$
+Возмущение через $B_f$ влияет на первую координату состояния в $11.3175$ раз сильнее, чем на вторую.
 
 
 \subsection{Вычисление $\boldsymbol{H_{\infty}}$-нормы для передаточной функции $\boldsymbol{W}$}
-...
+Определим $H_\infty$-норму передаточной функции $W,C=I$:
+$$
+W=\left( Is-\left( A+BK \right) \right)^{-1}B_f,\ ||W||_\infty=2.7268
+$$
+Так как $||W||_\infty<\gamma=5.6061$,
+замкнутая система обеспечивает
+гарантированное подавление возмущений:
+при любом входном воздействии
+конечной энергии энергия
+выходного сигнала не превышает
+$\gamma^2$-кратной энергии возмущения.
 
 
 \section{Вывод}
-...
+В ходе выполнения лабораторной
+работы был синтезирован $H_\infty$-оптимальный
+регулятор для линейного объекта с возмущениями.
+Также были исследованы $H_\infty$-нормы передаточных
+функций -- так как они меньше выбранного $\gamma$,
+то у системы есть запас робастности.
+
+
+\appendix
+\renewcommand{\thesection}{\Asbuk{section}}
+\section{Приложение}
+\begin{lstlisting}[label=code,caption={Программа для лабораторной работы}]
+%% plant parameters
+A=[7 -4;
+    5 6];
+B=[5;
+    2];
+Bf=[3;
+    9];
+Q=[3 0;
+    0 4];
+%% solve Riccati
+g=5.6061;
+P=are(A,B*B'-g^(-2)*Bf*Bf',Q)
+K=-B'*P
+eP=eig(P)
+eK=eig(A+B*K)
+%% H_infty-norm
+C1=[1 0];
+C2=[0 1];
+Acl=A+B*K;
+
+sys1ss=ss(Acl,Bf,C1,0);
+[ninf1,fpeak1]=hinfnorm(sys1ss)
+sys2ss=ss(Acl,Bf,C2,0);
+[ninf2,fpeak2]=hinfnorm(sys2ss)
+sys3ss=ss(Acl,Bf,eye(2),0);
+[ninf3,fpeak3]=hinfnorm(sys3ss)
+\end{lstlisting}
 \end{document}
