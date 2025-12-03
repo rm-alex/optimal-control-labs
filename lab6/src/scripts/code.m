@@ -22,13 +22,28 @@ C2=[0 1];
 Acl=A+B*K;
 
 sys1ss=ss(Acl,Bf,C1,0);
-% sys1tf=tf(sys1ss);
 [ninf1,fpeak1]=hinfnorm(sys1ss)
 
 sys2ss=ss(Acl,Bf,C2,0);
-% sys2tf=tf(sys2ss);
 [ninf2,fpeak2]=hinfnorm(sys2ss)
 
 sys3ss=ss(Acl,Bf,eye(2),0);
-% sys3tf=tf(sys3ss);
 [ninf3,fpeak3]=hinfnorm(sys3ss)
+
+%% defense
+syms s w real
+
+W_s = simplify(eye(2)*inv(s*eye(size(Acl))-Acl)*Bf);
+W_jw = subs(W_s, s, 1i*w)
+W_jw_e = transpose(subs(W_s, s, -1i*w));
+
+GG = W_jw_e * W_jw;
+sing_vals = simplify(sqrt(eig(GG)))
+
+omega_vals = logspace(-2, 3, 1000);
+sigma_values = zeros(length(omega_vals), 1);
+
+for i = 1:length(omega_vals)
+    sigma_num = double(subs(sing_vals, w, omega_vals(i)));
+    sigma_values(i) = max(real(sigma_num));
+end
